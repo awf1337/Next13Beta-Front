@@ -1,0 +1,16 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  box-sizing: border-box;
+}
+
+main {
+  background-image: url('/body-background.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100vh;
+}

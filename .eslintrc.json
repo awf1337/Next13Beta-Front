@@ -1,3 +1,57 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "tsconfigRootDir": "__dirname",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint/eslint-plugin",
+    "unused-imports",
+    "simple-import-sort"
+  ],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "root": true,
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "ignorePatterns": [".eslintrc.json","tailwind.config.js"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "unused-imports/no-unused-imports": "error",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "prettier/prettier": [
+      "warn",
+      {
+        "singleQuote": true,
+        "semi": true,
+        "tabWidth": 2
+      }
+    ],
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error"
+  },
+  "overrides": [
+    {
+      "files": [".js", ".jsx", ".ts", ".tsx"],
+      "rules": {
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              ["^react", "^@?w"],
+              ["^(@|components)(/.|$)"],
+              ["^\u0000"],
+              ["^..(?!/?$)", "^../?$"],
+              ["^./(?=./)(?!/?$)", "^.(?!/?$)", "^./?$"],
+              ["^.+.?(css)$"]
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }
