@@ -11,7 +11,19 @@ import {
 } from '@material-tailwind/react';
 import Link from 'next/link';
 
-export function SignUp() {
+import { signUpHook } from '../../../helpers/hooks/sign-up.hook';
+
+const SignUp = () => {
+  const {
+    handleSubmit,
+    handleTC,
+    handleUsername,
+    handleEmail,
+    handlePassword,
+    validation,
+    emailExists,
+  } = signUpHook();
+
   return (
     <>
       <img
@@ -31,15 +43,41 @@ export function SignUp() {
             </Typography>
           </CardHeader>
           <CardBody className="flex flex-col gap-4">
-            <Input label="Name" size="lg" />
-            <Input type="email" label="Email" size="lg" />
-            <Input type="password" label="Password" size="lg" />
+            <Input
+              label="Username"
+              size="lg"
+              onChange={handleUsername}
+              error={!validation.username}
+            />
+            <Input
+              type="email"
+              label={emailExists ? 'Email already exists' : 'Email'}
+              size="lg"
+              onChange={handleEmail}
+              error={!validation.email}
+            />
+            <div>
+              <Input
+                type="password"
+                label="Password"
+                size="lg"
+                onChange={handlePassword}
+                error={!validation.password}
+              />
+            </div>
+
             <div className="-ml-2.5">
-              <Checkbox label="I agree the Terms and Conditions" />
+              <Checkbox
+                label="I agree the Terms and Conditions"
+                onChange={handleTC}
+                labelProps={{ className: !validation.TC ? 'text-red-500' : '' }}
+                className="text-red-500"
+              />
             </div>
           </CardBody>
+
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth>
+            <Button variant="gradient" fullWidth onClick={handleSubmit}>
               Sign Up
             </Button>
             <Typography variant="small" className="mt-6 flex justify-center">
@@ -60,6 +98,6 @@ export function SignUp() {
       </div>
     </>
   );
-}
+};
 
 export default SignUp;

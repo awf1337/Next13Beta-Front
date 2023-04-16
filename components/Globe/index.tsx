@@ -65,8 +65,6 @@ const Globe = () => {
 
         const { width, height } = container.getBoundingClientRect();
 
-        console.log('container', width, height);
-        console.log('canvas', canvas);
         const ratio = 1;
         const renderer = new THREE.WebGLRenderer({
           canvas,
