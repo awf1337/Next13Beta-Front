@@ -15,7 +15,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // const { push } = useRouter();
   const pathname = usePathname();
+
+  // if (!pathname.includes('auth') && pathname !== '/') {
+  //   if (!checkCookie('sessionToken')) {
+  //     push('/auth/sign-in');
+  //   }
+  // }
+
   return (
     <html lang="en">
       <title>BullBot</title>

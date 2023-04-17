@@ -11,7 +11,16 @@ import {
 } from '@material-tailwind/react';
 import Link from 'next/link';
 
+import signInHook from '../../../helpers/hooks/sign-in.hook';
+
 const SignIn = () => {
+  const {
+    setLoginCredentials,
+    handleLogIn,
+    setBadCredential,
+    badCredential,
+    loginCredential,
+  } = signInHook();
   return (
     <>
       <img
@@ -31,14 +40,47 @@ const SignIn = () => {
             </Typography>
           </CardHeader>
           <CardBody className="flex flex-col gap-4">
-            <Input type="email" label="Email" size="lg" />
-            <Input type="password" label="Password" size="lg" />
+            <Input
+              label="Email"
+              size="lg"
+              onChange={(e: any) => {
+                setLoginCredentials((prev) => ({
+                  ...prev,
+                  email: e.target.value,
+                }));
+                setBadCredential(false);
+              }}
+              error={badCredential}
+            />
+            <Input
+              type="password"
+              label="Password"
+              size="lg"
+              onChange={(e: any) => {
+                setLoginCredentials((prev) => ({
+                  ...prev,
+                  password: e.target.value,
+                }));
+                setBadCredential(false);
+              }}
+              error={badCredential}
+            />
             <div className="-ml-2.5">
-              <Checkbox label="Remember Me" />
+              <Checkbox
+                label="Remember Me"
+                checked={loginCredential.remember}
+                onChange={(e: any) => {
+                  setLoginCredentials((prev) => ({
+                    ...prev,
+                    remember: e.target.checked,
+                  }));
+                  setBadCredential(e.target.checked);
+                }}
+              />
             </div>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth>
+            <Button variant="gradient" fullWidth onClick={handleLogIn}>
               Sign In
             </Button>
             <Typography variant="small" className="mt-6 flex justify-center">

@@ -1,25 +1,16 @@
-import { useState } from 'react';
-
-import { SignUpClientType } from '../API/restClient/types';
 import { ReactContext } from './reactContext';
 
 const ReactProvider = ({ children }) => {
-  const [signUp, setSignUp] = useState<SignUpClientType>({
-    username: '',
-    email: '',
-    password: '',
-    TC: false,
-  });
-
+  const logOut = () => {
+    fetch('/api/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
   return (
-    <ReactContext.Provider
-      value={{
-        signUp,
-        setSignUp,
-      }}
-    >
-      {children}
-    </ReactContext.Provider>
+    <ReactContext.Provider value={{ logOut }}>{children}</ReactContext.Provider>
   );
 };
 

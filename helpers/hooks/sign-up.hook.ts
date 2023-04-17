@@ -1,16 +1,22 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 
 import { signUpRequest } from '../../API';
-import { useReactContext } from '../../context/reactContext';
+import { SignUpClientType } from '../../API/restClient/types';
 import validateEmail from '../functions/validateEmail';
 import validatePassword from '../functions/validatePassword';
 
 export const signUpHook = () => {
   const { push } = useRouter();
-  const { signUp, setSignUp } = useReactContext();
+
+  const [signUp, setSignUp] = useState<SignUpClientType>({
+    username: '',
+    email: '',
+    password: '',
+    TC: false,
+  });
+
   const [validation, setValidation] = useState({
     TC: true,
     username: true,
@@ -20,17 +26,11 @@ export const signUpHook = () => {
   });
   const [emailExists, setEmailExists] = useState(false);
 
-  const { mutate, isLoading, isError, error, data } = useMutation(
-    signUpRequest,
-    {
-      onSuccess: () => {
-        push('/dashboard');
-      },
-      onError: () => {
-        toast.error(`MerchantSkin failed to create!`);
-      },
-    }
-  );
+  const { mutate, isLoading, isError, error } = useMutation(signUpRequest, {
+    onSuccess: () => {
+      push('/dashboard');
+    },
+  });
 
   useEffect(() => {
     if (typeof error === 'string' && error.includes('Email already exists')) {
@@ -41,20 +41,6 @@ export const signUpHook = () => {
       setEmailExists(true);
     }
   }, [isError]);
-
-  useEffect(() => {
-    console.log(data?.data?.accessToken);
-    if (data && data.data.accessToken) {
-      const token = data.data.accessToken;
-      fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      });
-    }
-  }, [data]);
 
   const handleUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     const username = event.target.value;
@@ -107,7 +93,6 @@ export const signUpHook = () => {
   };
 
   const handleSubmit = () => {
-    console.log('submit validation', fieldsValidation());
     if (fieldsValidation()) mutate(signUp);
   };
 

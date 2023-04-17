@@ -1,2 +1,2 @@
+export * from './authClient';
 export * from './defaultClient';
-export * from './signUpClient';

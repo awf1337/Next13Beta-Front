@@ -1,10 +1,8 @@
 import { createContext, useContext } from 'react';
 
-import { SignUpClientType } from '../API/restClient/types';
-
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IReactContext {
-  signUp: SignUpClientType;
-  setSignUp: React.Dispatch<React.SetStateAction<SignUpClientType>>;
+  logOut: () => void;
 }
 
 export const ReactContext = createContext<IReactContext>(null);
