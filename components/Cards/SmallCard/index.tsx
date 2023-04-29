@@ -25,7 +25,7 @@ const StatisticsCard = ({
   isLoading = false,
 }: StatisticsCardProps) => {
   return (
-    <Card className="w-64">
+    <Card className="w-64 ">
       <CardHeader
         variant="gradient"
         color={color}
@@ -33,7 +33,7 @@ const StatisticsCard = ({
       >
         {icon}
       </CardHeader>
-      <CardBody className="p-4 text-right">
+      <CardBody className="py-1 px-3 text-right">
         {isLoading || isNaN(value) ? (
           'loading...'
         ) : (

@@ -1,4 +1,5 @@
 const validatePassword = (password: string) => {
+  if (password.length < 8) return false;
   /*
     this is the regex that validates the password to have at least 8 characters,
     1 uppercase character, 1 lowercase character, 1 number or 1 special character

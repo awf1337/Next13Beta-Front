@@ -29,7 +29,7 @@ export default function RootLayout({
       <title>BullBot</title>
       <head>
         <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
           rel="stylesheet"
         />
       </head>
@@ -39,7 +39,9 @@ export default function RootLayout({
           <QueryClientProvider client={queryClient}>
             <ReactProvider>
               {children}
-              {pathname === '/' && <LogInButton />}
+              {pathname.includes('auth') && (
+                <LogInButton className="fixed top-[20px] left-[20px] rotate-180" />
+              )}
             </ReactProvider>
           </QueryClientProvider>
           <Toaster position="bottom-center" reverseOrder={false} />

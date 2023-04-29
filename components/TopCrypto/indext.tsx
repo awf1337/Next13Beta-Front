@@ -1,4 +1,5 @@
 import BTC from '../../public/icons/bitcoin';
+import EthereumIcon from '../../public/icons/ethereum';
 import SmallCard from '../Cards/SmallCard';
 import topCryptoHook from './topCryptoHook';
 
@@ -16,7 +17,7 @@ const TopCrypto = () => {
       />
       <SmallCard
         color="blue"
-        icon={<BTC />}
+        icon={<EthereumIcon />}
         title="volume"
         value={ETHUSDT}
         isLoading={isLoading}

@@ -3,9 +3,6 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 import pointsCoordonate from './coordonates/pointsCoordonateGlobe.json';
-import pointsCoordonateNY from './coordonates/pointsCoordonateNY.json';
-import pointsCoordonateSH from './coordonates/pointsCoordonateSH.json';
-import pointsCoordonateUK from './coordonates/pointsCoordonateUK.json';
 
 const defaultGlobeColor = '#3993fe'; // modify this to change the globe color
 
@@ -63,21 +60,35 @@ const Globe = () => {
           throw new Error('Canvas element not found.');
         }
 
-        const { width, height } = container.getBoundingClientRect();
+        const { width } = container.getBoundingClientRect();
+        let { height } = container.getBoundingClientRect();
 
-        const ratio = 1;
+        if (height > width) {
+          height = width;
+        }
+
         const renderer = new THREE.WebGLRenderer({
           canvas,
           antialias: true,
         });
-        renderer.setSize(width, height / ratio);
+        renderer.setSize(width, height);
+
+        const handleResize = () => {
+          const { width } = container.getBoundingClientRect();
+          let { height } = container.getBoundingClientRect();
+          if (height > width) {
+            height = width;
+          }
+          renderer.setSize(width, height);
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+        };
+        window.addEventListener('resize', handleResize);
+
         // 1. Setup scene
         const scene = new THREE.Scene();
         // 2. Setup camera
-        const camera = new THREE.PerspectiveCamera(
-          45,
-          (width / height) * ratio
-        );
+        const camera = new THREE.PerspectiveCamera(45, width / height);
 
         // 3. Setup renderer
         globeShape.forEach((shape) => scene.add(shape));
@@ -110,18 +121,20 @@ const Globe = () => {
 
       canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       const defaultGlobe = makeMagic(pointsCoordonate, defaultGlobeColor);
-      const obj2 = makeMagic(pointsCoordonateUK, 'green');
-      const obj3 = makeMagic(pointsCoordonateNY, 'red');
-      const obj4 = makeMagic(pointsCoordonateSH, 'red');
 
-      createScene([defaultGlobe, obj2, obj3, obj4]);
+      createScene([defaultGlobe]);
+
+      // // Cleanup function to remove event listener when component unmounts
+      // return () => {
+      //   window.removeEventListener('resize', handleResize);
+      // };
     };
 
     createGlobe();
   }, []);
 
   return (
-    <div ref={globeRef} className="w-100 h-5/6 flex flex-col justify-center">
+    <div ref={globeRef} className="w-100 h-full flex flex-col justify-center">
       <canvas ref={canvasRef} />
     </div>
   );

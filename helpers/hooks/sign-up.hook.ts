@@ -25,6 +25,7 @@ export const signUpHook = () => {
     signUpPressed: false,
   });
   const [emailExists, setEmailExists] = useState(false);
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const { mutate, isLoading, isError, error } = useMutation(signUpRequest, {
     onSuccess: () => {
@@ -142,6 +143,8 @@ export const signUpHook = () => {
     handlePassword,
     handleEmail,
     handleUsername,
+    passwordVisibility,
+    setPasswordVisibility,
     validation,
     emailExists,
   };
