@@ -1,21 +1,23 @@
 import { usePathname, useRouter } from 'next/navigation';
 
-const publicPaths = ['/auth/sign-in', '/', '/auth/sign-up'];
+import { nextPrivateRoutes } from '../../private.routes';
+import { nextPublicRoutes, reddirectRoutes } from '../../public.routes';
 
 const LogoBullBot = () => {
   const router = useRouter();
-  const path = usePathname();
+  const pathname = usePathname();
 
   const reddirectLogo = () => {
-    if (publicPaths.includes(path)) router.push('/');
-    if (!publicPaths.includes(path)) router.push('/dashboard');
+    if (reddirectRoutes.includes(pathname)) router.push(nextPublicRoutes.home);
+    if (!reddirectRoutes.includes(pathname))
+      router.push(nextPrivateRoutes.dashboard);
   };
 
   return (
     <h1
       onClick={reddirectLogo}
       className={`${
-        path !== '/' && 'cursor-pointer'
+        pathname !== nextPublicRoutes.home && 'cursor-pointer'
       } text-white text-2xl select-none font-semibold`}
     >
       BullBot

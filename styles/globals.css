@@ -7,6 +7,16 @@
   margin: 0;
 }
 
+@layer components {
+  .sideNav-icon {
+    @apply relative flex text-color-primary hover:text-color-gray-light bg-color-gray-light hover:bg-color-primary flex-col justify-center items-center mb-5 select-none cursor-pointer h-12 w-12 rounded-3xl hover:rounded-xl transition-all duration-300 ease-linear;
+  }
+
+  .sideNav-tooltip {
+    @apply absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md text-white bg-gray-700 text-xs font-bold transition-all duration-200 scale-0 origin-left
+  }
+}
+
 main {
   background-image: url('/body-background.png');
   background-size: cover;
@@ -16,6 +26,26 @@ main {
   height: 100vh;
 }
 
-.material-icons-outlined.md-18 {
-  font-size: 20px;
+.borderTopSpacing {
+  position: relative;
+}
+
+.borderTopSpacing::after,
+.borderTopSpacing::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 28%;
+  height: 20px;
+  border-top: 4px solid white;
+}
+
+.borderTopSpacing::after {
+  left: 0;
+  border-top-left-radius: 24px;
+}
+
+.borderTopSpacing::before {
+  right: 0;
+  border-top-right-radius: 24px;
 }

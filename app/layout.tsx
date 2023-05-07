@@ -5,8 +5,10 @@ import { usePathname } from 'next/navigation';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+import LayoutPrivate from '../components/LayoutPrivate';
 import LogInButton from '../components/LoginButton';
 import { ReactProvider } from '../context/reactProvider';
+import { nextPrivateRoutesArr } from '../private.routes';
 
 const queryClient = new QueryClient();
 
@@ -15,14 +17,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const { push } = useRouter();
   const pathname = usePathname();
-
-  // if (!pathname.includes('auth') && pathname !== '/') {
-  //   if (!checkCookie('sessionToken')) {
-  //     push('/auth/sign-in');
-  //   }
-  // }
 
   return (
     <html lang="en">
@@ -38,7 +33,12 @@ export default function RootLayout({
         <main>
           <QueryClientProvider client={queryClient}>
             <ReactProvider>
-              {children}
+              {!nextPrivateRoutesArr.includes(pathname) && { children }}
+
+              {nextPrivateRoutesArr.includes(pathname) && (
+                <LayoutPrivate children={children} />
+              )}
+
               {pathname.includes('auth') && (
                 <LogInButton className="fixed top-[20px] left-[20px] rotate-180" />
               )}

@@ -1,24 +1,26 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { AiOutlineLogin } from 'react-icons/ai';
 
+import { nextPublicRoutes, reddirectRoutes } from '../../public.routes';
+
 const LogInButton = ({ className }: { className?: string }) => {
-  const router = useRouter();
   const pathname = usePathname();
 
-  const logInButtonNavigation = () => {
-    if (pathname === '/auth/sign-in') router.push('/');
-    if (pathname !== '/auth/sign-in') router.push('/auth/sign-in');
-  };
+  const href = (() => {
+    if (reddirectRoutes.includes(pathname)) return nextPublicRoutes.home;
+    if (!reddirectRoutes.includes(pathname)) return nextPublicRoutes.signIn;
+  })();
 
   return (
-    <button
+    <Link
+      href={href}
       className={`font-bold rounded-full text-white transform transition duration-500 hover:scale-125 ${className}`}
-      onClick={logInButtonNavigation}
     >
       <AiOutlineLogin size={40} color="inherit" />
-    </button>
+    </Link>
   );
 };
 

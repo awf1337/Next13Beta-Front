@@ -10,20 +10,23 @@ import { color } from '@material-tailwind/react/types/components/alert';
 interface StatisticsCardProps {
   color: color;
   icon: any;
-  title: string;
+  volume: number;
   value: number;
   isLoading?: boolean;
   footer?: string;
+  positivePrice?: boolean;
 }
 
 const StatisticsCard = ({
   color,
   icon,
-  title,
+  volume,
   value,
   footer,
   isLoading = false,
+  positivePrice,
 }: StatisticsCardProps) => {
+  const conversionVolume = (volume / 1000000).toFixed(2) + 'M USDT';
   return (
     <Card className="w-64 ">
       <CardHeader
@@ -33,16 +36,16 @@ const StatisticsCard = ({
       >
         {icon}
       </CardHeader>
-      <CardBody className="py-1 px-3 text-right">
+      <CardBody className="py-1 px-3 text-right select-none">
         {isLoading || isNaN(value) ? (
           'loading...'
         ) : (
-          <Typography variant="h4" color="blue-gray">
+          <Typography variant="h4" color={positivePrice ? 'green' : 'red'}>
             {value}$
           </Typography>
         )}
         <Typography variant="small" className="font-normal text-blue-gray-600">
-          {title + '100'}
+          {conversionVolume}
         </Typography>
       </CardBody>
       {footer && (
