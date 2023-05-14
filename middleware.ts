@@ -4,6 +4,7 @@ export function middleware(req: NextRequest) {
   const authToken: boolean = req.cookies.has('Authorization');
   const url = req.nextUrl.clone();
 
+  // auth validation and redirects
   if (
     !authToken &&
     !req.nextUrl.pathname.startsWith('/auth') &&
@@ -23,7 +24,15 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  return NextResponse.next();
+  // Store current request url in a custom header, which you can read later for pathname in SSR
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set('x-url', req.url);
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {

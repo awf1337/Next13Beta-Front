@@ -1,23 +1,20 @@
-'use client';
 import '../styles/globals.css';
 
-import { usePathname } from 'next/navigation';
-import { Toaster } from 'react-hot-toast';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { headers } from 'next/headers';
 
 import LayoutPrivate from '../components/LayoutPrivate';
-import LogInButton from '../components/LoginButton';
+import LayoutPublic from '../components/LayoutPublic';
 import { ReactProvider } from '../context/reactProvider';
 import { nextPrivateRoutesArr } from '../private.routes';
-
-const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  const headersList = headers();
+  const header_url = headersList.get('x-url') || '';
+  const uri = new URL(header_url);
 
   return (
     <html lang="en">
@@ -31,20 +28,15 @@ export default function RootLayout({
 
       <body>
         <main>
-          <QueryClientProvider client={queryClient}>
-            <ReactProvider>
-              {!nextPrivateRoutesArr.includes(pathname) && { children }}
+          <ReactProvider>
+            {!nextPrivateRoutesArr.includes(uri.pathname) && (
+              <LayoutPublic children={children} />
+            )}
 
-              {nextPrivateRoutesArr.includes(pathname) && (
-                <LayoutPrivate children={children} />
-              )}
-
-              {pathname.includes('auth') && (
-                <LogInButton className="fixed top-[20px] left-[20px] rotate-180" />
-              )}
-            </ReactProvider>
-          </QueryClientProvider>
-          <Toaster position="bottom-center" reverseOrder={false} />
+            {nextPrivateRoutesArr.includes(uri.pathname) && (
+              <LayoutPrivate children={children} />
+            )}
+          </ReactProvider>
         </main>
       </body>
     </html>
