@@ -2,7 +2,6 @@
 import '../styles/globals.css';
 
 import { usePathname } from 'next/navigation';
-import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import LayoutPrivate from '../components/LayoutPrivate';
@@ -33,7 +32,7 @@ export default function RootLayout({
         <main>
           <QueryClientProvider client={queryClient}>
             <ReactProvider>
-              {!nextPrivateRoutesArr.includes(pathname) && { children }}
+              {!nextPrivateRoutesArr.includes(pathname) && children}
 
               {nextPrivateRoutesArr.includes(pathname) && (
                 <LayoutPrivate children={children} />
@@ -44,7 +43,6 @@ export default function RootLayout({
               )}
             </ReactProvider>
           </QueryClientProvider>
-          <Toaster position="bottom-center" reverseOrder={false} />
         </main>
       </body>
     </html>
