@@ -1,9 +1,4 @@
-'use client';
-import { QueryClient, QueryClientProvider } from 'react-query';
-
 import { ReactContext } from './reactContext';
-
-const queryClient = new QueryClient();
 
 const ReactProvider = ({ children }) => {
   const logOut = () => {
@@ -15,11 +10,7 @@ const ReactProvider = ({ children }) => {
     });
   };
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactContext.Provider value={{ logOut }}>
-        {children}
-      </ReactContext.Provider>
-    </QueryClientProvider>
+    <ReactContext.Provider value={{ logOut }}>{children}</ReactContext.Provider>
   );
 };
 
